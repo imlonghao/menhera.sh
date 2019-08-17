@@ -120,6 +120,11 @@ copy_config() {
     ! cp -axr "${OLDROOT}/etc/ssh" "${NEWROOT}/etc"
     ! cp -ax "${OLDROOT}/etc/"{passwd,shadow} "${NEWROOT}/etc"
     ! cp -axr "${OLDROOT}/root/.ssh" "${NEWROOT}/root"
+    
+    if [ -h "${NEWROOT}/etc/resolv.conf" ]; then
+        unlink "${NEWROOT}/etc/resolv.conf"
+        echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > "${NEWROOT}/etc/resolv.conf"
+    fi
 
     chroot "${NEWROOT}" chsh -s /bin/bash root
 
